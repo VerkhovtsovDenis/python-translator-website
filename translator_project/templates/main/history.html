@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+История использования
+{% endblock %}
+
+{% block content %}
+<h1 class="pb-2 mb-0">История запросов</h1>
+<hr />
+<p>
+  Транслятор с Pascal на Python является учебным проектом. Данный проект был
+  создан на занятиях по теории языков программирования и компиляторам во время
+  обучения на 3-м курсе по направлению "Программная инженерия".
+</p>
+
+{% if history %}
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">IP-адрес</th>
+          <th scope="col">Дата и время</th>
+          <th scope="col">Pascal-код</th>
+          <th scope="col">Python-код</th>
+          <th scope="col">Информация</th>
+          <th scope="col">Ошибки</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for token in history %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ token.ip_address }}</td>
+          <td>{{ token.req_date }}</td>
+          <td>{{ token.pascal_code|default:"-" }}</td>
+          <td>{{ token.python_code|default:"-" }}</td>
+          <td>{{ token.translating_info|default:"-" }}</td>
+          <td>{{ token.translating_errors|default:"-" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p>История запросов пуста.</p>
+{% endif %}
+
+{% endblock %}
+
+{% block include_scripts %}
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
