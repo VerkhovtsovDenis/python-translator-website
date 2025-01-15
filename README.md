@@ -24,4 +24,10 @@ python translator_project/manage.py makemigrations
 python translator_project/manage.py migrate
 python translator_project/manage.py runserver 8000
 ```
+Если проект уже установлен
+```bash
+translator_project/manage.py runserver 192.168.1.37:8000
+```
+
 4. Перейти по [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+
