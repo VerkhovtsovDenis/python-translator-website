@@ -37,7 +37,7 @@ def about(request):
 
 def history(request):
     template_name = 'main/history.html'
-    history = return_history_objects().reverse()
+    history = return_history_objects()
     return render(request, template_name, {'history': history})
 
 
