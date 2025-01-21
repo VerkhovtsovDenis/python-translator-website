@@ -30,13 +30,13 @@
       </thead>
       <tbody>
         {% for token in history reversed%}
-        <tr>
+        <tr">
           <th scope="row">{{ forloop.counter }}</th>
           <td>{{ token.ip_address }}</td>
-          <td>{{ token.req_date|date:"d E Y"}}</td>
+          <td>{{ token.req_date|date:"d E Y H:i:s"}}</td>
           <td>{{ token.pascal_code|linebreaksbr|default:"-" }}</td>
           <td>{{ token.python_code|linebreaksbr|default:"-" }}</td>
-          <td>{{ token.translating_info|default:"-" }}</td>
+          <td class="table-{{token.translating_status}}"></td>
           <td>{{ token.translating_errors|default:"-" }}</td>
         </tr>
         {% endfor %}

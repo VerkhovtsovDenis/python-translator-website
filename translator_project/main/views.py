@@ -43,4 +43,5 @@ def history(request):
 
 def history_del(request):
     delete_all_history_objects()
-    return redirect('/history/', permanent=True)
+    print('delete')
+    return redirect('/history/', request)

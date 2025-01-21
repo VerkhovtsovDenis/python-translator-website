@@ -11,7 +11,7 @@ from django.conf import settings
 class CodeToken:
     pascal_code: Optional[str] = None
     python_code: Optional[str] = None
-    info: Optional[str] = None
+    status: Optional[str] = None
     errors: Optional[str] = None
 
 
@@ -80,19 +80,17 @@ class TranslatorManager:
             task.python_code = response.json().get('result_code')
             task.errors = response.json().get('errors')
 
-            task.info = "Translation successful."
+            task.status = 'success' if task.python_code else 'warning'
+
 
             logging.info(f"Translation complete: \t {task.python_code}," +
                          f" \n {task.errors}")
 
-        except requests.RequestException as ex:
-            task.errors = str(ex)
-            task.info = "Translation failed."
-            logging.error(f"Error during translation: {task.errors}")
-        except Exception as other_ex:
-            task.errors = str(other_ex)
-            task.info = "Translation failed."
-            logging.error(f"Error during translation: {task.errors}")
+        except Exception as ex:
+            task.status = "danger"
+            task.errors = f"Unexpected {type(ex)=}: {ex=}\n" + \
+                          "Стоит обратиться к администратору системы."
+            logging.error(task.errors)
 
     def __str__(self):
         if len(self.queue_answers) != 0:

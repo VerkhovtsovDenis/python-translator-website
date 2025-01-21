@@ -70,6 +70,7 @@ def return_history_objects() -> List[object]:
 
 def delete_all_history_objects() -> None:
     History.objects.all().delete()
+    print("del obj")
 
 
 def _generate_console_data_from_task(queue: Deque[CodeToken]):
@@ -77,7 +78,7 @@ def _generate_console_data_from_task(queue: Deque[CodeToken]):
     console: ConsoleData
 
     if task.python_code:
-        console = ConsoleData(Status.success, task.info)
+        console = ConsoleData(Status.success, "Перевод кода на Python выполнен успешно")
     elif task.errors:
         console = ConsoleData(Status.error, task.errors)
     else:
@@ -97,7 +98,7 @@ def _create_history_from_code(request: dict,
         ),
         pascal_code=code_token.pascal_code,
         python_code=code_token.python_code or '',
-        translating_info=code_token.info,
+        translating_status=code_token.status,
         translating_errors=code_token.errors,
     )
 

@@ -37,7 +37,7 @@
     <h5>Вывод компилятора:</h5>
     <div class="console" id="console-output" style="height: 250px; overflow-y: auto;">
       {% for data in console %}
-        <div class="{{data.status.name}}">[{{ data.time_now }}]: {{ data.message }}</div>
+        <div class="{{data.status.name}}">[{{ data.time_now }}]: {{ data.message|linebreaksbr}}</div>
       {% endfor %}
     </div>
   </div>
