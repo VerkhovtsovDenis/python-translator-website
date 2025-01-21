@@ -78,7 +78,8 @@ def _generate_console_data_from_task(queue: Deque[CodeToken]):
     console: ConsoleData
 
     if task.python_code:
-        console = ConsoleData(Status.success, "Перевод кода на Python выполнен успешно")
+        console = ConsoleData(Status.success, "Перевод кода на Python выполнен\
+                               успешно")
     elif task.errors:
         console = ConsoleData(Status.error, task.errors)
     else:
