@@ -31,3 +31,11 @@ translator_project/manage.py runserver 192.168.1.37:8000
 
 4. Перейти по [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
+## Деплой
+Для деплоя используется инструмент ci/cd werf. Werf автоматизирует сборку образа и его доставку в k8s. 
+
+Деплой запускается командой `werf converge --repo omelchenkomaxim/translator-website`.
+
+Перед запуском команды необходимо подключить kubectl к нужному кластеру, подключить docker к нужному registry и прокинуть креды от registry в k8s.
+
+Подробнее с началом работы с werf можно ознакомится [тут](https://ru.werf.io/guides/django/100_basic/20_cluster.html).

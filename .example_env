@@ -1,1 +1,5 @@
-TRANSLATOR_API_URL = "http://localhost:8000/translate"
+# Внешний api транслятора
+TRANSLATOR_API_URL="http://158.160.180.43/translator-api/translate"
+
+# В к8s получаем доступ по внутреннему доменному имени
+# TRANSLATOR_API_URL="http://translator-api:8000/translate"
