@@ -1,0 +1,4 @@
+replicaCount: 1
+appName: translator-website
+env:
+  TRANSLATOR_API_URL: "http://translator-api:8000/translate"

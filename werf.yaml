@@ -1,0 +1,9 @@
+project: translator-website
+configVersion: 1
+
+deploy:
+  namespace: translator
+
+---
+image: app
+dockerfile: dockerfile

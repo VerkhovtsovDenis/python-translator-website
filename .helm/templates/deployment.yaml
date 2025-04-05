@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+    spec:
+      imagePullSecrets:
+      - name: registrysecret
+      containers:
+      - name: app
+        image: {{ .Values.werf.image.app }}
+        ports:
+        - containerPort: 8000
+        env:
+        {{- range $key, $val := .Values.env }}
+        - name: {{ $key }}
+          value: {{ $val | quote }}
+        {{- end }}
