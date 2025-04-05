@@ -3,16 +3,17 @@ kind: Ingress
 metadata:
   name: {{ .Values.appName }}
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2  # Добавлено для правильного перенаправления
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/app-root: /{{ .Values.appName }}/
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
   - http:
       paths:
-      - path: /{{ .Values.appName }}(/|$)(.*)
+      - path: /translator-website(/|$)(.*)
         pathType: Prefix
         backend:
           service:
             name: {{ .Values.appName }}
             port:
-              number: 8000
+              number: 80

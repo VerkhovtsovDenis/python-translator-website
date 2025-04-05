@@ -121,10 +121,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = 'translator-web/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static_dev',
-]
+STATIC_URL = '/translator-website/static/'
+MEDIA_URL = '/translator-website/media/'
+STATIC_ROOT = 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -132,6 +131,8 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TRANSLATOR_API_URL = os.getenv('TRANSLATOR_API_URL')
-import logging
-logging.warn(TRANSLATOR_API_URL)
-# TRANSLATOR_API_URL = 'http://localhost:5000/translate'
+
+# Для работы с префиксом в URL
+FORCE_SCRIPT_NAME = '/translator-website'  # Замените на ваше .Values.appName
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

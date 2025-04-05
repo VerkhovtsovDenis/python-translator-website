@@ -1,5 +1,5 @@
 
-FROM python:3.12.3-alpine
+FROM python:3.12.3-alpine as app
 
 RUN apk add --no-cache --virtual .build-deps \
     gcc \
@@ -22,4 +22,13 @@ EXPOSE 8000
 
 RUN chmod +x /app/run.sh
 
-ENTRYPOINT ["/app/run.sh"]
+# NGINX-образ со статическими файлами.
+FROM nginx:stable-alpine as frontend
+
+WORKDIR /www
+
+COPY translator_project/static /app/static
+
+COPY .werf/nginx.conf /etc/nginx/nginx.conf
+
+# ENTRYPOINT ["/app/run.sh"]

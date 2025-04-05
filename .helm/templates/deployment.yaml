@@ -24,3 +24,15 @@ spec:
         - name: {{ $key }}
           value: {{ $val | quote }}
         {{- end }}
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            python translator_project/manage.py makemigrations &&
+            python translator_project/manage.py migrate &&
+            python translator_project/manage.py collectstatic --noinput &&
+            python translator_project/manage.py runserver 0.0.0.0:8000
+  
+      - name: frontend
+        image: {{ .Values.werf.image.frontend }}
+        ports:
+        - containerPort: 80

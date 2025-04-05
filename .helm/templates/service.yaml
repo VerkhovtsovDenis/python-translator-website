@@ -7,4 +7,4 @@ spec:
     app: {{ .Values.appName }}
   ports:
   - name: http
-    port: 8000
+    port: 80

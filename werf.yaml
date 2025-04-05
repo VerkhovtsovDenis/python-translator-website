@@ -7,3 +7,9 @@ deploy:
 ---
 image: app
 dockerfile: dockerfile
+target: app
+
+---
+image: frontend
+dockerfile: dockerfile
+target: frontend
