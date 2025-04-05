@@ -1,0 +1,4 @@
+venv/
+translator_project/db.sqlite3
+__pycache__/
+.env

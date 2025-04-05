@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -131,5 +131,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# TRANSLATOR_API_URL = os.getenv('TRANSLATOR_API_URL')
-TRANSLATOR_API_URL = 'http://localhost:5000/translate'
+TRANSLATOR_API_URL = os.getenv('TRANSLATOR_API_URL')
+import logging
+logging.warn(TRANSLATOR_API_URL)
+# TRANSLATOR_API_URL = 'http://localhost:5000/translate'
