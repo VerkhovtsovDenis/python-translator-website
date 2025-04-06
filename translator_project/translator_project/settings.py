@@ -19,7 +19,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 PREFIX_ENABLED = os.getenv('K8S_PREFIX_ENABLED', False) in ["True", "true"]
-
+PREFIX = "" if not PREFIX_ENABLED else "/translator-website"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -127,8 +127,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/translator-website/static/' if PREFIX_ENABLED else '/static/'
-MEDIA_URL = '/translator-website/media/' if PREFIX_ENABLED else '/media/'
+STATIC_URL = PREFIX + '/static/'
+MEDIA_URL = PREFIX + '/media/'
 if not PREFIX_ENABLED:
     STATICFILES_DIRS = [
         BASE_DIR / 'static',
@@ -141,12 +141,3 @@ STATIC_ROOT = 'static'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TRANSLATOR_API_URL = os.getenv('TRANSLATOR_API_URL')
-
-if PREFIX_ENABLED:
-    # Для работы с префиксом в URL
-    FORCE_SCRIPT_NAME = '/translator-website'
-    USE_X_FORWARDED_HOST = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-import logging
-logging.warn(DATABASES)

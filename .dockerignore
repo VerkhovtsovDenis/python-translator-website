@@ -2,6 +2,5 @@ venv/
 .helm/
 docs/
 README.md
-dockerfile
 translator_project/db.sqlite3
 __pycache__/
