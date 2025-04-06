@@ -3,3 +3,7 @@ TRANSLATOR_API_URL="http://158.160.180.43/translator-api/translate"
 
 # В к8s получаем доступ по внутреннему доменному имени
 # TRANSLATOR_API_URL="http://translator-api:8000/translate"
+
+
+# Активирует маршрутизацию с перфиксом '/translator-website' в k8s
+K8S_PREFIX_ENABLED=false

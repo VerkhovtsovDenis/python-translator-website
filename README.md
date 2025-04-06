@@ -39,3 +39,5 @@ translator_project/manage.py runserver 192.168.1.37:8000
 Перед запуском команды необходимо подключить kubectl к нужному кластеру, подключить docker к нужному registry и прокинуть креды от registry в k8s.
 
 Подробнее с началом работы с werf можно ознакомится [тут](https://ru.werf.io/guides/django/100_basic/20_cluster.html).
+
+Приложение разворачивается по адресу `http://158.160.180.43/translator-website/`
