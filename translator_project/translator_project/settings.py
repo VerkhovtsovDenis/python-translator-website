@@ -84,7 +84,9 @@ WSGI_APPLICATION = 'translator_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # Подменяем путь к бд по переменной, которая прокидывается в хелмах
+        # В кубере оказалось удобнее хранить ее в отдельной директории, которые прокидывать как volume в контейнер
+        'NAME': os.environ.get("SQLITE_PATH", BASE_DIR / "db.sqlite3"), 
     }
 }
 
@@ -145,3 +147,6 @@ if PREFIX_ENABLED:
     FORCE_SCRIPT_NAME = '/translator-website'
     USE_X_FORWARDED_HOST = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+import logging
+logging.warn(DATABASES)

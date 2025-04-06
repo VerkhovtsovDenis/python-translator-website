@@ -14,6 +14,7 @@ spec:
     spec:
       imagePullSecrets:
       - name: registrysecret
+
       containers:
       - name: app
         image: {{ .Values.werf.image.app }}
@@ -24,15 +25,24 @@ spec:
         - name: {{ $key }}
           value: {{ $val | quote }}
         {{- end }}
+        - name: SQLITE_PATH
+          value: /app/sqlite_data/db.sqlite3
         command: ["/bin/sh", "-c"]
         args:
           - |
-            python translator_project/manage.py makemigrations &&
-            python translator_project/manage.py migrate &&
-            python translator_project/manage.py collectstatic --noinput &&
+            python translator_project/manage.py makemigrations && \
+            python translator_project/manage.py migrate && \
             python translator_project/manage.py runserver 0.0.0.0:8000
-  
+        volumeMounts:
+          - name: sqlite-storage
+            mountPath: /app/sqlite_data
+
       - name: frontend
         image: {{ .Values.werf.image.frontend }}
         ports:
         - containerPort: 80
+      
+      volumes:
+        - name: sqlite-storage
+          persistentVolumeClaim:
+            claimName: sqlite-pvc
