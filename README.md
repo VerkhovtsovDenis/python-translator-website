@@ -16,7 +16,7 @@ git clone https://github.com/VerkhovtsovDenis/python-translator-website.git
 cd python-translator-website
 python -m venv venv
 source venv/Scripts/activate
-pip install -r requirements.txt
+pip install -r docs/requirements.txt
 ```
 3. Миграции и запуск
 ```bash
