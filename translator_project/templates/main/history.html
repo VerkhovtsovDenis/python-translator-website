@@ -8,38 +8,55 @@
 {% block content %}
 <h1 class="pb-2 mb-0">История запросов</h1>
 <hr />
+
+{% if not history %}
 <p>
   Транслятор с Pascal на Python является учебным проектом. Данный проект был
   создан на занятиях по теории языков программирования и компиляторам во время
   обучения на 3-м курсе по направлению "Программная инженерия".
 </p>
+{% endif %}
+
+<svg style="display: none;">
+  <symbol id="icon-info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+  </symbol>
+
+</svg>
+
+
 
 {% if history %}
   <div class="table-responsive">
     <table class="table table-striped table-hover table-sm">
       <thead class="thead-dark">
         <tr>
-          <th scope="col" class="col-md-1">#</th>
-          <th scope="col" class="col-md-1">IP-адрес</th>
+          <th scope="col" class="col-md-1">№ п.п.</th>
           <th scope="col" class="col-md-2">Дата и время</th>
           <th scope="col" class="col-md-1">Языки</th>
           <th scope="col" class="col-md-3">Input-код</th>
           <th scope="col" class="col-md-3">Output-код</th>
-          <th scope="col" class="col-md-2">Информация</th>
-          <th scope="col" class="col-md-2">Ошибки</th>
         </tr>
       </thead>
       <tbody>
         {% for token in history reversed %}
-        <tr">
+        <tr >
           <th scope="row">{{ forloop.counter }}</th>
-          <td>{{ token.ip_address }}</td>
           <td>{{ token.req_date|date:"d E Y H:i:s"}}</td>
           <td>Pascal → {{token.language}}</td>
           <td>{{ token.input_code|linebreaksbr|default:"-" }}</td>
+
+          {% if token.output_code %}
           <td>{{ token.output_code|linebreaksbr|default:"-" }}</td>
-          <td class="table-{{token.translating_status}}"></td>
-          <td>{{ token.translating_errors|default:"-" }}</td>
+          {% else %}
+            <td title="{{token.translating_errors}}">
+              Ошибка компиляции
+              <svg width="16" height="16" fill="currentColor">
+                <use href="#icon-info"></use>
+              </svg>
+            </td>
+          {% endif %}
         </tr>
         {% endfor %}
       </tbody>
