@@ -44,6 +44,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  const copyButton = document.getElementsByName("copy-code")[0];
+  const textArea = document.getElementsByName("output-code")[0];
+
+  copyButton.addEventListener('click', e => {
+    navigator.clipboard.writeText(textArea.value)
+  });
+  
   // Инициализация при загрузке
   updateLanguageSelection();
 
@@ -83,9 +90,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <!-- Блок Drag and Drop -->
     <div class="col-md-6">
-        <textarea class="form-control prettyprint" rows="15">{{ python_code }}</textarea>
+        <textarea class="form-control prettyprint" rows="15" name="output-code">{{ python_code }}</textarea>
         <div class="d-flex justify-content-end gap-2 mt-3">
-          <button class="btn btn-outline-secondary">Копировать</button>
+          <button class="btn btn-outline-secondary" name="copy-code">Копировать</button>
           <button class="btn btn-outline-secondary">Увеличить редактор</button>
         </div>    
     </div>
