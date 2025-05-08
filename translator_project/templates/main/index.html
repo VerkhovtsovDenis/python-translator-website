@@ -9,43 +9,73 @@
 
 <!-- JavaScript для переключения стилей -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-      const radios = document.querySelectorAll('input[name="lang"]');
-      
-      radios.forEach(radio => {
-          radio.addEventListener('change', () => {
-              document.querySelector('label[for="python"]').classList.toggle('btn-outline-primary', document.getElementById('python').checked);
-              document.querySelector('label[for="python"]').classList.toggle('btn-outline-secondary', !document.getElementById('python').checked);
-              
-              document.querySelector('label[for="go"]').classList.toggle('btn-outline-primary', document.getElementById('go').checked);
-              document.querySelector('label[for="go"]').classList.toggle('btn-outline-secondary', !document.getElementById('go').checked);
-          });
-      });
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('code-form');
+  const languageField = document.getElementById('form-language');
+  const languageRadios = document.querySelectorAll('.language-switcher input[type="radio"]');
+  const languageLabels = document.querySelectorAll('.language-switcher label.btn');
+
+  // Функция обновления стилей и скрытого поля
+  function updateLanguageSelection() {
+    const selectedRadio = document.querySelector('.language-switcher input[type="radio"]:checked');
+    
+    // Обновляем скрытое поле формы
+    languageField.value = selectedRadio.value;
+    
+    // Обновляем стили кнопок
+    languageLabels.forEach(label => {
+      const radio = document.getElementById(label.getAttribute('for'));
+      label.classList.toggle('btn-outline-primary', radio.checked);
+      label.classList.toggle('btn-outline-secondary', !radio.checked);
+    });
+  }
+
+  // Обработчики событий
+  languageRadios.forEach(radio => {
+    radio.addEventListener('change', updateLanguageSelection);
   });
+
+  languageLabels.forEach(label => {
+    label.addEventListener('click', function() {
+      const radio = document.getElementById(this.getAttribute('for'));
+      radio.checked = true;
+      document.getElementById('id_language').value = document.querySelectorAll('.language-switcher input[type="radio"]:checked')[0].value;
+      updateLanguageSelection();
+    });
+  });
+
+  // Инициализация при загрузке
+  updateLanguageSelection();
+
+  // Обработчик отправки формы (для демонстрации)
+  form.addEventListener('submit', function(e) {
+    console.log('Отправляем язык:', languageField.value);
+    // Форма отправится автоматически с правильным значением language
+  });
+});
+
 </script>
     
 
 <!-- Контент -->
 <div class="container lg">
-  <h1 class="text-center">Преобразуй Pascal в    
-
-    <div class="btn-group" role="group">
-      <!-- Python (активен по умолчанию) -->
-      <input type="radio" class="btn-check visually-hidden" name="lang" id="python" autocomplete="off" checked>
+  <h1 class="text-center">Преобразуй Pascal в
+    <div class="btn-group language-switcher" role="group">
+      <input type="radio" class="btn-check" name="language" id="python" value="python" autocomplete="off" checked>
       <label class="btn btn-outline-primary" for="python">Python</label>
-  
-      <!-- Go (неактивен по умолчанию) -->
-      <input type="radio" class="btn-check visually-hidden" name="lang" id="go" autocomplete="off">
+      
+      <input type="radio" class="btn-check" name="language" id="go" value="go" autocomplete="off">
       <label class="btn btn-outline-secondary" for="go">Go</label>
-  </div>
-    
+    </div>
   </h1>
+
 
   <div class="row mt-4">
     <!-- Блок ввода кода -->
     <div class="col-md-6">
       <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <input type="hidden" name="language" id="form-language" value="python">
         {{ form.as_p }}
         <button class="btn btn-primary">Конвертировать</button>
       </form>
