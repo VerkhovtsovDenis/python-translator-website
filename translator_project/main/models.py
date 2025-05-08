@@ -4,7 +4,21 @@ from django.utils import timezone
 now = timezone.now()
 
 
-# Create your models here.
+class SupportLanguage(models.Model):
+    name = models.CharField(primary_key=True,
+                            help_text='Язык программирования',
+                            max_length=64)
+
+    def __str__(self):
+        return self.name
+
+    @classmethod
+    def ensure_default_languages(cls):
+        """Создаёт языки по умолчанию, если их нет."""
+        cls.objects.get_or_create(name='Python')
+        cls.objects.get_or_create(name='Go')
+
+
 class History(models.Model):
     ip_address = models.GenericIPAddressField(help_text='Ip address')
     req_date = models.DateTimeField(help_text='Time and date of request',
