@@ -41,7 +41,7 @@
       <tbody>
         {% for token in history reversed %}
         <tr>
-          <td style="text-align: center !important;" >{{ token.req_date|date:"d E Y H:i:s"}}</td>
+          <td style="text-align: center !important;" >{{ token.req_date|date:"d.m.Y H:i"}}</td>
 
           {% if token.language|stringformat:"s"|cut:" " == "Python" %}
             <td style="text-align: center !important;"><span class="badge badge-pill badge-warning">Python</span></td>
