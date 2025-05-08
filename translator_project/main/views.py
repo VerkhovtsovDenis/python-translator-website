@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import PascalCodeForm
+from .forms import TranslateForm
 from django.http import JsonResponse
 from .main_service import return_python_code_with_console_log, \
                          return_history_objects, \
@@ -12,7 +12,7 @@ def index(request):
     code: str = ''
 
     if request.method == "POST":
-        form = PascalCodeForm(request.POST)
+        form = TranslateForm(request.POST)
 
         if form.is_valid():
             code, console = return_python_code_with_console_log(
@@ -23,7 +23,7 @@ def index(request):
             return JsonResponse({'success': False,
                                  'message': 'Form is invalid'})
     else:
-        form = PascalCodeForm()
+        form = TranslateForm()
 
     return render(request, template_name, {'console': console,
                                            'form': form,
