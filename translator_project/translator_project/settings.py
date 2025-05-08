@@ -132,4 +132,4 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # TRANSLATOR_API_URL = os.getenv('TRANSLATOR_API_URL')
-TRANSLATOR_API_URL = 'http://localhost:5000/translate'
+TRANSLATOR_API_URL = 'http://127.0.0.1:5000/translate'
