@@ -9,7 +9,20 @@
 
 <!-- Контент -->
 <div class="container lg">
-  <h1 class="text-center">Преобразуй Pascal в Python</h1>
+  <h1 class="text-center">Преобразуй Pascal в    
+
+    <div class="btn-group" role="group">
+      <!-- Python (активен по умолчанию) -->
+      <input type="radio" class="btn-check visually-hidden" name="lang" id="python" autocomplete="off" checked>
+      <label class="btn btn-outline-primary" for="python">Python</label>
+  
+      <!-- Go (неактивен по умолчанию) -->
+      <input type="radio" class="btn-check visually-hidden" name="lang" id="go" autocomplete="off">
+      <label class="btn btn-outline-secondary" for="go">Go</label>
+  </div>
+    
+  </h1>
+
   <div class="row mt-4">
     <!-- Блок ввода кода -->
     <div class="col-md-6">
