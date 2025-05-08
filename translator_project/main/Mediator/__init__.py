@@ -9,8 +9,9 @@ from django.conf import settings
 
 @dataclass
 class CodeToken:
-    pascal_code: Optional[str] = None
-    python_code: Optional[str] = None
+    language: Optional[str] = None
+    input_code: Optional[str] = None
+    output_code: Optional[str] = None
     status: Optional[str] = None
     errors: Optional[str] = None
 
@@ -46,14 +47,14 @@ class TranslatorManager:
                     task = self.queue_request.popleft()
 
             if task:
-                logging.debug(f"Processing task: {task.pascal_code}")
+                logging.debug(f"Processing task: {task.input_code}")
                 self._translate(task)
                 self.queue_answers.append(task)
 
-    def add_task(self, pascal_code: str):
+    def add_task(self, input_code: str, language: str):
         with self.lock:
             if len(self.queue_request) < self.queue_request.maxlen:
-                self.queue_request.append(CodeToken(pascal_code=pascal_code))
+                self.queue_request.append(CodeToken(input_code=input_code, language=language))
                 logging.info("Task added." +
                              f"Queue size:{len(self.queue_request)}/" +
                              f"{self.queue_request.maxlen}")
@@ -68,8 +69,8 @@ class TranslatorManager:
             response = requests.post(
                 settings.TRANSLATOR_API_URL,
                 json={
-                    "pascal_code": task.pascal_code,
-                    "target_language": 'python'
+                    "pascal_code": task.input_code,
+                    "target_language": task.language
                 },
                 timeout=1000
             )
@@ -77,13 +78,12 @@ class TranslatorManager:
             logging.debug(f"Translation are get response: {response}")
 
             response.raise_for_status()
-            task.python_code = response.json().get('result_code')
+            task.output_code = response.json().get('result_code')
             task.errors = response.json().get('errors')
 
-            task.status = 'success' if task.python_code else 'warning'
+            task.status = 'success' if task.output_code else 'warning'
 
-
-            logging.info(f"Translation complete: \t {task.python_code}," +
+            logging.info(f"Translation complete: \t {task.output_code}," +
                          f" \n {task.errors}")
 
         except Exception as ex:
@@ -103,9 +103,10 @@ class TranslatorManager:
 if __name__ == '__main__':
     translator = TranslatorManager()
 
-    pascal_code = "program aaa var i, j: real; b: string; begin i := 1.9 " + \
-                  "+ 0.1; writeln(i); end."
-    translator.add_task(pascal_code)
+    input_code = "program aaa var i, j: real; b: string; begin i := 1.9 " + \
+                 "+ 0.1; writeln(i); end."
+    language = 'python'
+    translator.add_task(input_code, language)
 
     # Дождаться завершения обработки
     import time

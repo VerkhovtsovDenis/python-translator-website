@@ -1,11 +1,12 @@
-from .models import History
+from .models import History, SupportLanguage
 from typing import Optional, Deque, Union, List
-from .forms import PascalCodeForm
+from .forms import TranslateForm
 from .Mediator import CodeToken, TranslatorManager
 from django.http import JsonResponse
 from enum import Enum
 from dataclasses import dataclass
 import time
+from main.Mediator import logging
 
 
 Status = Enum('status', [('success', 1), ('error', 2), ('info', 3)])
@@ -33,19 +34,21 @@ console_list: List[ConsoleData] = []
 
 
 def return_python_code_with_console_log(request: dict,
-                                        form: PascalCodeForm) -> \
+                                        form: TranslateForm) -> \
                                     Union[Optional[str], List[ConsoleData]]:
     """Возвращает транслированный Python код с инорфмацией для консоли"""
-    pascal_code: str = ''
+    input_code: str = ''
 
     try:
-        pascal_code = form.cleaned_data['pascal_code']
+        input_code = form.cleaned_data['input_code']
+        language = form.cleaned_data['language']
+
     except ValueError:
         return JsonResponse({'success': False,
                              'message': 'Передайте форму с кодом'})
 
     translator = TranslatorManager()
-    translator.add_task(pascal_code)
+    translator.add_task(input_code, language)
 
     while not translator.queue_answers:
         time.sleep(2)
@@ -61,10 +64,11 @@ def return_python_code_with_console_log(request: dict,
 
     console_list.append(console)
 
-    return code_token.python_code, console_list
+    return code_token.output_code, console_list
 
 
 def return_history_objects() -> List[object]:
+    print(History.objects.all())
     return History.objects.all()
 
 
@@ -77,7 +81,7 @@ def _generate_console_data_from_task(queue: Deque[CodeToken]):
     task: CodeToken = queue.popleft()
     console: ConsoleData
 
-    if task.python_code:
+    if task.output_code:
         console = ConsoleData(Status.success, "Перевод кода на Python выполнен\
                                успешно")
     elif task.errors:
@@ -97,8 +101,9 @@ def _create_history_from_code(request: dict,
         ip_address=_get_user_ip_address_from_request(
             request_meta=request.META
         ),
-        pascal_code=code_token.pascal_code,
-        python_code=code_token.python_code or '',
+        language=SupportLanguage.objects.get(name=code_token.language.capitalize()),
+        input_code=code_token.input_code,
+        output_code=code_token.output_code or '',
         translating_status=code_token.status,
         translating_errors=code_token.errors,
     )
