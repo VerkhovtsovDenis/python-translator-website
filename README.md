@@ -34,5 +34,15 @@ translator_project/manage.py runserver 127.0.0.1:8000
 ## TODO
 - [x] функционал выбора языка
 - [x] функционал копирования кода по кнопке
+- [x] Сделать красивую таблицу "Мои запросы"
 - [ ] BUG: выбор языка слетает при обновлении страницы/трансляции
-- [ ] Сделать красивую таблицу "Мои запросы"
+
+## Ссылки
+1. Bootstrap:
+    - https://getbootstrap.su/docs/5.0/layout/containers/
+    - https://getbootstrap.com/docs/4.0/components/badge/
+    - https://getbootstrap.com/docs/5.3/helpers/icon-link/
+    - https://getbootstrap.ru/docs/icons/
+    - https://icons.getbootstrap.com/icons/link/
+2. Django:
+    - https://django.fun/docs/django/5.2/ref/templates/builtins/#date
