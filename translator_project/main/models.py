@@ -24,11 +24,20 @@ class History(models.Model):
     req_date = models.DateTimeField(help_text='Time and date of request',
                                     default=timezone.now)
 
-    pascal_code = models.CharField(help_text='Pascal code', max_length=5000,
+    input_code = models.CharField(help_text='Input code', max_length=5000,
                                    blank=True)
-    python_code = models.CharField(help_text='Python code', max_length=5000,
+    output_code = models.CharField(help_text='Output code', max_length=5000,
                                    blank=True,
                                    null=True)
+    language = models.ForeignKey(
+        SupportLanguage,
+        on_delete=models.CASCADE,
+        null=True,  # Разрешить NULL временно
+        blank=True,
+        to_field='name',  # Указываем ссылку на поле 'name'
+        db_column='language_name',  # Опционально: переименовываем столбец в БД
+        verbose_name='Выходной язык программирования'
+    )
 
     translating_status = models.CharField(help_text='Translating information',
                                         max_length=150, blank=True)
@@ -40,8 +49,9 @@ def __str__(self):
     fields = [
         ('ip_address', self.ip_address),
         ('req_date', self.req_date),
-        ('pascal_code', self.pascal_code),
-        ('python_code', self.python_code),
+        ('input_code', self.input_code),
+        ('output_code', self.output_code),
+        ('language', self.language),
         ('translating_status', self.translating_status),
         ('translating_errors', self.translating_errors),
     ]
