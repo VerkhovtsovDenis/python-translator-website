@@ -6,7 +6,6 @@ from django.http import JsonResponse
 from enum import Enum
 from dataclasses import dataclass
 import time
-from main.Mediator import logging
 
 
 Status = Enum('status', [('success', 1), ('error', 2), ('info', 3)])
@@ -101,7 +100,9 @@ def _create_history_from_code(request: dict,
         ip_address=_get_user_ip_address_from_request(
             request_meta=request.META
         ),
-        language=SupportLanguage.objects.get(name=code_token.language.capitalize()),
+        language=SupportLanguage.objects.get(
+            name=code_token.language.capitalize()
+        ),
         input_code=code_token.input_code,
         output_code=code_token.output_code or '',
         translating_status=code_token.status,
