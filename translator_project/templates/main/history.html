@@ -58,14 +58,12 @@
               <pre><code style="background: none;">{{ token.output_code|default:"-" }}</code></pre>
             </td>
           {% else %}
-            <td>
+            <td title="{{token.translating_errors}}">
               <span class="badge badge-pill badge-danger">Ошибка компиляции
                 <svg width="16" height="16" fill="currentColor">
                   <use href="#icon-info"></use>
                 </svg>
               </span>
-
-              
             </td>
           {% endif %}
         </tr>
